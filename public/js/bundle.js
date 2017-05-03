@@ -13158,6 +13158,10 @@ module.exports = function(module) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_socket_io_client__ = __webpack_require__(225);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_socket_io_client___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_socket_io_client__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_RacerCharts__ = __webpack_require__(237);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_RacerForm__ = __webpack_require__(238);
+
+
 
 
 
@@ -13166,22 +13170,45 @@ class RaceContainer extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
   constructor(props) {
     super(props);
     this.socket = __WEBPACK_IMPORTED_MODULE_1_socket_io_client___default()();
+    this.state = {
+      racerCounts: {}
+    };
+  }
+
+  startRace(racers) {
+    console.log(racers);
+    this.socket.emit('racers', racers);
+    const racerCounts = {};
+
+    racers.forEach(racer => {
+      racerCounts[racer] = 0;
+    });
+
+    this.setState({ racerCounts: racerCounts });
+
+    this.socket.on('racers', racer => {
+      console.log(racer);
+
+      const newRacerCounts = this.state.racerCounts;
+      newRacerCounts[racer] = newRacerCounts[racer] + 1;
+
+      this.setState(prevState => ({
+        racerCounts: newRacerCounts
+      }));
+
+      if (newRacerCounts[racer] === 20) {
+        this.socket.emit('stop');
+        this.socket.close();
+      }
+    });
   }
 
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       null,
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'p',
-        null,
-        'form here'
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'p',
-        null,
-        'graphs here'
-      )
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_RacerForm__["a" /* default */], { startRace: this.startRace.bind(this) }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_RacerCharts__["a" /* default */], { racerCounts: this.state.racerCounts })
     );
   }
 }
@@ -30750,6 +30777,82 @@ module.exports = __webpack_amd_options__;
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+/* 237 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+const RacerChart = props => {
+
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    "div",
+    null,
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "figure",
+      null,
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+        src: "http://1x1px.me/FF4D00-0.8.png",
+        alt: "",
+        width: props.racerCounts['may'] * 7 }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "figcaption",
+        null,
+        "May: ",
+        props.racerCounts['may']
+      )
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "figure",
+      null,
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("img", {
+        src: "http://1x1px.me/FF4D00-0.8.png",
+        alt: "",
+        width: props.racerCounts['trump'] * 7 }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "figcaption",
+        null,
+        "Trump: ",
+        props.racerCounts['trump']
+      )
+    )
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (RacerChart);
+
+/***/ }),
+/* 238 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+const RacerForm = props => {
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    props.startRace(["may", "trump"]);
+  };
+
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    "form",
+    { onSubmit: handleSubmit },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "button",
+      { type: "submit" },
+      "Start the race >>"
+    )
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (RacerForm);
 
 /***/ })
 /******/ ]);

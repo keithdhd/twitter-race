@@ -12,12 +12,28 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
   console.log('a user connected')
-  const stream = twitter.stream('statuses/filter', { track: 'edinburgh' })
-   
-  stream.on('tweet', function (tweet) {
-    console.log(tweet.text)
+
+  socket.once('racers', function(racers){
+
+    // Set up a new Twitter stream for each racer
+    racerStreams = racers.map( (racer) => {    
+        return twitter.stream('statuses/filter', { track: racer })
+    })
+
+    racerStreams.forEach( (stream, index) => {
+      stream.on('tweet', function (tweet) {
+        io.emit('racers', racers[index])
+      })
+    })
   })
+
+  socket.on('stop', function(){
+    console.log('socket closed')
+    // io.close()
+  })
+
 })
+
 
 http.listen(3000, function(){
   console.log('The race is on! @ 3000')
