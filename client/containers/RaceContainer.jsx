@@ -2,6 +2,7 @@ import React from 'react'
 import io from 'socket.io-client'
 import RacerCharts from '../components/RacerCharts'
 import RacerForm from '../components/RacerForm'
+import RacerMap from '../components/RacerMap'
 
 class RaceContainer extends React.Component {
 
@@ -48,6 +49,7 @@ class RaceContainer extends React.Component {
       <div>
         <RacerForm startRace={this.startRace.bind(this)}/>
         <RacerCharts racerCounts={this.state.racerCounts}/>
+        <RacerMap />
       </div>
     )
   }
