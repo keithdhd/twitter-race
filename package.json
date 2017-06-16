@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
+    "webpack": "cd client && webpack -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,6 +15,7 @@
     "babel-loader": "^6.4.1",
     "babel-preset-react": "^6.24.1",
     "express": "^4.15.2",
+    "google-map-react": "^0.24.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "socket.io": "^1.7.3",
