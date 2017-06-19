@@ -16,7 +16,6 @@ class RaceContainer extends React.Component {
 
 
   startRace(racers){
-    console.log(racers)
     this.socket.emit('racers', racers)
     const racerCounts = {}
 
@@ -27,19 +26,20 @@ class RaceContainer extends React.Component {
     this.setState({ racerCounts: racerCounts });
 
     this.socket.on('racers', (racer) => {
-      console.log(racer)
 
       const newRacerCounts = this.state.racerCounts
-      newRacerCounts[racer] = newRacerCounts[racer] + 1
+      newRacerCounts[racer.racer] = newRacerCounts[racer.racer] + 1
 
       this.setState((prevState) => ({
         racerCounts: newRacerCounts
       }));
 
-      if(newRacerCounts[racer] === 20){
+      if(newRacerCounts[racer.racer] === 20){
         this.socket.emit('stop')
         this.socket.close()
       }
+
+      console.log(racer)
 
     })
   }

@@ -22,7 +22,11 @@ io.on('connection', function(socket){
 
     racerStreams.forEach( (stream, index) => {
       stream.on('tweet', function (tweet) {
-        io.emit('racers', racers[index])
+        const racer = {
+          racer: racers[index],
+          tweet: tweet
+        }
+        io.emit('racers', racer )
       })
     })
   })
