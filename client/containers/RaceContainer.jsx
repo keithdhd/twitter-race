@@ -20,7 +20,7 @@ class RaceContainer extends React.Component {
     const racerCounts = {}
 
     racers.forEach( (racer) => {
-      racerCounts[racer] = 0
+      racerCounts[racer] = []
     }) 
 
     this.setState({ racerCounts: racerCounts });
@@ -28,13 +28,13 @@ class RaceContainer extends React.Component {
     this.socket.on('racers', (racer) => {
 
       const newRacerCounts = this.state.racerCounts
-      newRacerCounts[racer.racer] = newRacerCounts[racer.racer] + 1
+      newRacerCounts[racer.racer].push(racer.tweet)
 
       this.setState((prevState) => ({
         racerCounts: newRacerCounts
       }));
 
-      if(newRacerCounts[racer.racer] === 20){
+      if(newRacerCounts[racer.racer].length === 20){
         this.socket.emit('stop')
         this.socket.close()
       }
