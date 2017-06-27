@@ -16,3 +16,7 @@ div{
 .square {
   background-color: orange;
 }
+
+#tweet-lists {
+  display: flex;
+}

@@ -49,7 +49,10 @@ class RaceContainer extends React.Component {
         <div>
           <RacerForm startRace={this.startRace.bind(this)}/>
           <RacerCharts racerCounts={this.state.racerCounts}/>
-          <TweetList tweets={this.state.racerCounts['may']}/>
+          <div id="tweet-lists">
+            <TweetList tweets={this.state.racerCounts['may']}/>
+            <TweetList tweets={this.state.racerCounts['trump']}/>
+          </div>
         </div>
       )
     } else {
