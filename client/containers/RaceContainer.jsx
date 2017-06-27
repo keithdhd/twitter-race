@@ -2,6 +2,7 @@ import React from 'react'
 import io from 'socket.io-client'
 import RacerCharts from '../components/RacerCharts'
 import RacerForm from '../components/RacerForm'
+import TweetList from '../components/TweetList'
 
 class RaceContainer extends React.Component {
 
@@ -42,12 +43,23 @@ class RaceContainer extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <RacerForm startRace={this.startRace.bind(this)}/>
-        <RacerCharts racerCounts={this.state.racerCounts}/>
-      </div>
-    )
+    console.log(this.state.racerCounts)
+    if (this.state.racerCounts['may']) {
+      return (
+        <div>
+          <RacerForm startRace={this.startRace.bind(this)}/>
+          <RacerCharts racerCounts={this.state.racerCounts}/>
+          <TweetList tweets={this.state.racerCounts['may']}/>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <RacerForm startRace={this.startRace.bind(this)}/>
+          <RacerCharts racerCounts={this.state.racerCounts}/>
+        </div>
+      )
+    }
   }
 }
 
