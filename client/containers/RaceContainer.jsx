@@ -2,6 +2,7 @@ import React from 'react'
 import io from 'socket.io-client'
 import RacerCharts from '../components/RacerCharts'
 import RacerForm from '../components/RacerForm'
+import TweetList from '../components/TweetList'
 
 class RaceContainer extends React.Component {
 
@@ -15,27 +16,25 @@ class RaceContainer extends React.Component {
 
 
   startRace(racers){
-    console.log(racers)
     this.socket.emit('racers', racers)
     const racerCounts = {}
 
     racers.forEach( (racer) => {
-      racerCounts[racer] = 0
+      racerCounts[racer] = []
     }) 
 
     this.setState({ racerCounts: racerCounts });
 
     this.socket.on('racers', (racer) => {
-      console.log(racer)
 
       const newRacerCounts = this.state.racerCounts
-      newRacerCounts[racer] = newRacerCounts[racer] + 1
+      newRacerCounts[racer.racer].push(racer.tweet)
 
       this.setState((prevState) => ({
         racerCounts: newRacerCounts
       }));
 
-      if(newRacerCounts[racer] === 20){
+      if(newRacerCounts[racer.racer].length === 20){
         this.socket.emit('stop')
         this.socket.close()
       }
@@ -44,13 +43,28 @@ class RaceContainer extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <RacerForm startRace={this.startRace.bind(this)}/>
-        <RacerCharts racerCounts={this.state.racerCounts}/>
-      </div>
-    )
+    console.log(this.state.racerCounts)
+    if (this.state.racerCounts['may']) {
+      return (
+        <div>
+          <RacerForm startRace={this.startRace.bind(this)}/>
+          <RacerCharts racerCounts={this.state.racerCounts}/>
+          <div id="tweet-lists">
+            <TweetList tweets={this.state.racerCounts['may']}/>
+            <TweetList tweets={this.state.racerCounts['trump']}/>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <RacerForm startRace={this.startRace.bind(this)}/>
+          <RacerCharts racerCounts={this.state.racerCounts}/>
+        </div>
+      )
+    }
   }
 }
+
 
 export default RaceContainer
