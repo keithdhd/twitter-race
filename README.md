@@ -1,5 +1,7 @@
 # twitter-race
 
+** Inspired by https://github.com/junedev
+
 To Run:
 1. clone
 2. npm install
