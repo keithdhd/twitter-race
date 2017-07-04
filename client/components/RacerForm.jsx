@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 const RacerForm = (props) => {
 
   const handleSubmit = (e) => {
@@ -9,7 +10,7 @@ const RacerForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <button type="submit">Start the race >></button>
+      <button className="button is-primary" type="submit">Start the race >></button>
     </form>
   )
 

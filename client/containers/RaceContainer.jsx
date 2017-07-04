@@ -49,9 +49,9 @@ class RaceContainer extends React.Component {
         <div>
           <RacerForm startRace={this.startRace.bind(this)}/>
           <RacerCharts racerCounts={this.state.racerCounts}/>
-          <div id="tweet-lists">
-            <TweetList tweets={this.state.racerCounts['may']}/>
-            <TweetList tweets={this.state.racerCounts['trump']}/>
+          <div className="columns">
+            <TweetList className="column" tweets={this.state.racerCounts['may']}/>
+            <TweetList className="column" tweets={this.state.racerCounts['trump']}/>
           </div>
         </div>
       )
